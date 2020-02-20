@@ -1,4 +1,4 @@
-F = open("a_example.txt", "r")
+F = open("b_read_on.txt", "r")
 line1 = F.readline().split()
 # total number of books
 Books_number = int(line1[0])
@@ -11,6 +11,7 @@ books_scores = [int(x) for x in F.readline().split()]
 # libraies and thier content
 Libraries = {}  # libraries information
 # initialization of libraries
+nb_lib = 0
 
 
 def sum_score(l):
@@ -54,40 +55,59 @@ def score_normalization():
         b = lib[1][2]/Books_per_day_Max
         c = 1-(lib[1][1]/sign_up_Max)
         critere[lib[0]] = (a+b+c)/3
+        if(a == 0):
+            critere[lib[0]] = 0
         if(critere[Max_criter_id] < critere[lib[0]]):
             Max_criter_id = lib[0]
     return critere, Max_criter_id
 
 
-result_dict = []
+result_string = " "
+
+
+def string(list):
+    string = ""
+    for x in list:
+        string = string+" "+str(x)
+    return string[1:]
 
 
 def add_result(lib_id):
+    result_string = ""
     sended_books = Libraries[lib_id][4]
-    result_dict.append([lib_id, len(sended_books), sended_books])
+    result_string = result_string+str(lib_id)+" " + \
+        str(len(sended_books))+"\n"+string(sended_books)+"\n"
+    print(result_string)
+    return result_string
 
 
 def update_libraries(cr_id):
     list = Libraries[cr_id][4]
     for lib in Libraries.values():
         lib[4] = [x for x in lib[4] if x not in list]
+        lib[3] = sum_score(lib[4])
+
+
+nb_lib = 0
+str_res = ""
 
 
 def main():
+    str_res = ""
+    nb_lib = 0
     jour_restans = days_scan
     while(jour_restans > 0):
+
         cr, cr_max_id = score_normalization()
         jour_restans = jour_restans-Libraries[cr_max_id][1]
-        add_result(cr_max_id)
+        str_res = str_res+add_result(cr_max_id)
         update_libraries(cr_max_id)
+        nb_lib = nb_lib+1
+    return str(nb_lib)+"\n"+str_res
 
 
-main()
-print(result_dict)
-print(Libraries)
 # traitement ici
 
-
-file = open("a_result.txt", "w")
-file.write("result")
-file.close(),
+file = open("b_result.txt", "w")
+file.write(main())
+file.close()
