@@ -48,12 +48,23 @@ Libraries_copy = Libraries
 
 def score_normalization():
     critere = {}
+    Max_criter_id = 0
     for lib in Libraries.items():
         a = lib[1][3]/Max_score_lib
         b = lib[1][2]/Books_per_day_Max
         c = 1-(lib[1][1]/sign_up_Max)
         critere[lib[0]] = (a+b+c)/3
-    return critere
+        if(critere[Max_criter_id] < critere[lib[0]]):
+            Max_criter_id = lib[0]
+    return critere, Max_criter_id
+
+
+result_dict = []
+
+
+def add_result(lib_id):
+    sended_books = Libraries[lib_id][4]
+    result_dict.append([lib_id, len(sended_books), sended_books])
 
 
 def update_libraries(list):
