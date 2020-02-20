@@ -67,12 +67,18 @@ def add_result(lib_id):
     result_dict.append([lib_id, len(sended_books), sended_books])
 
 
-def update_libraries(list):
+def update_libraries(cr_id):
+    list = Libraries[cr_id]
     for lib in Libraries.values():
         lib[4] = [x for x in lib[4] if x not in list]
 
 
-print("score="+str(score_normalization()))
+def main():
+    while(jour_restans > 0):
+        cr, cr_max_id = score_normalization()
+        add_result(cr_max_id)
+        update_libraries(cr_max_id)
+
 
 update_libraries([3, 2, 5, 0])
 print(Libraries)
