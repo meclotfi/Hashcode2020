@@ -49,16 +49,22 @@ Libraries_copy = Libraries
 def score_normalization():
     critere = {}
     for lib in Libraries.items():
-        lib[1][3] = lib[1][3]/Max_score_lib
-        lib[1][2] = lib[1][2]/Books_per_day_Max
-        lib[1][1] = 1-(lib[1][1]/sign_up_Max)
-        critere[lib[0]] = (lib[1][1]+lib[1][2]+lib[1][3])/3
+        a = lib[1][3]/Max_score_lib
+        b = lib[1][2]/Books_per_day_Max
+        c = 1-(lib[1][1]/sign_up_Max)
+        critere[lib[0]] = (a+b+c)/3
     return critere
+
+
+def update_libraries(list):
+    for lib in Libraries.values():
+        lib[4] = [x for x in lib[4] if x not in list]
 
 
 print("score="+str(score_normalization()))
 
-
+update_libraries([3, 2, 5, 0])
+print(Libraries)
 # traitement ici
 
 
