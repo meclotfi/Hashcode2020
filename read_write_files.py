@@ -68,19 +68,22 @@ def add_result(lib_id):
 
 
 def update_libraries(cr_id):
-    list = Libraries[cr_id]
+    list = Libraries[cr_id][4]
     for lib in Libraries.values():
         lib[4] = [x for x in lib[4] if x not in list]
 
 
 def main():
+    jour_restans = days_scan
     while(jour_restans > 0):
         cr, cr_max_id = score_normalization()
+        jour_restans = jour_restans-Libraries[cr_max_id][1]
         add_result(cr_max_id)
         update_libraries(cr_max_id)
 
 
-update_libraries([3, 2, 5, 0])
+main()
+print(result_dict)
 print(Libraries)
 # traitement ici
 
