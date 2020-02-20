@@ -1,11 +1,15 @@
 F = open("a_example.txt", "r")
 line1 = F.readline().split()
+# total number of books
 Books_number = int(line1[0])
+# total number of libraries
 library_number = int(line1[1])
+# max days to scan
 days_scan = int(line1[2])
+# each book score
 books_scores = [int(x) for x in F.readline().split()]
-print(books_scores)
-Libraries = {}
+# libraies and thier content
+Libraries = {}  # libraries information
 i = 0
 t = F.readline().split()
 while (t != []):
@@ -19,6 +23,8 @@ while (t != []):
     t = F.readline().split()
 print(Libraries)
 # traitement ici
+variable
+#
 
 file = open("a_result.txt", "w")
 file.write("result")
