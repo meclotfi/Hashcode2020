@@ -23,8 +23,7 @@ while (t != []):
     t = F.readline().split()
 print(Libraries)
 # traitement ici
-variable
-#
+
 
 file = open("a_result.txt", "w")
 file.write("result")
