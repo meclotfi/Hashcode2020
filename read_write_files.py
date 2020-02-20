@@ -58,10 +58,7 @@ def score_normalization():
 
 print("score="+str(score_normalization()))
 
-score_normalization()
 
-
-print(Libraries)
 # traitement ici
 
 
