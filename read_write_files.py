@@ -1,4 +1,4 @@
-F = open("b_read_on.txt", "r")
+F = open("f_libraries_of_the_world.txt", "r")
 line1 = F.readline().split()
 # total number of books
 Books_number = int(line1[0])
@@ -12,6 +12,8 @@ books_scores = [int(x) for x in F.readline().split()]
 Libraries = {}  # libraries information
 # initialization of libraries
 nb_lib = 0
+
+print("simulation")
 
 
 def sum_score(l):
@@ -50,16 +52,36 @@ Libraries_copy = Libraries
 def score_normalization():
     critere = {}
     Max_criter_id = 0
+
     for lib in Libraries.items():
+
         a = lib[1][3]/Max_score_lib
         b = lib[1][2]/Books_per_day_Max
         c = 1-(lib[1][1]/sign_up_Max)
-        critere[lib[0]] = (a+b+c)/3
+        critere[lib[0]] = (a+b+c)
         if(a == 0):
             critere[lib[0]] = 0
         if(critere[Max_criter_id] < critere[lib[0]]):
             Max_criter_id = lib[0]
     return critere, Max_criter_id
+
+
+def Recalul_parameters():
+    global Max_score_lib, Books_per_day_Max, sign_up_Max
+    Max_score_lib = 1
+    Books_per_day_Max = 1
+    sign_up_Max = 1
+    for lib in Libraries.items():
+
+        a = lib[1][3]
+        if(a > Max_score_lib):
+            Max_score_lib = a
+        b = lib[1][2]
+        if(b > Books_per_day_Max):
+            Books_per_day_Max = b
+        c = 1-(lib[1][1]/sign_up_Max)
+        if(c > sign_up_Max):
+            sign_up_Max = c
 
 
 result_string = " "
@@ -72,20 +94,40 @@ def string(list):
     return string[1:]
 
 
+def takeSecond(elem):
+    return elem[1]
+
+
+def sort_book_list(list):
+    score = []
+    res = []
+    i = 0
+    for x in list:
+        score.append((x, books_scores[x]))
+    score.sort(key=takeSecond, reverse=True)
+    if(len(score) != 0):
+        while(i/len(score) < 0.5):
+            res.append(score[i][0])
+            i = i+1
+    return res
+
+
 def add_result(lib_id):
     result_string = ""
-    sended_books = Libraries[lib_id][4]
-    result_string = result_string+str(lib_id)+" " + \
+    sended_books = sort_book_list(Libraries[lib_id][4])
+    result_string = result_string+str(lib_id)+" " +\
         str(len(sended_books))+"\n"+string(sended_books)+"\n"
-    print(result_string)
+
     return result_string
 
 
 def update_libraries(cr_id):
+    global Libraries
     list = Libraries[cr_id][4]
     for lib in Libraries.values():
         lib[4] = [x for x in lib[4] if x not in list]
         lib[3] = sum_score(lib[4])
+    print(len(Libraries.items()))
 
 
 nb_lib = 0
@@ -108,6 +150,6 @@ def main():
 
 # traitement ici
 
-file = open("b_result.txt", "w")
+file = open("e_result.txt", "w")
 file.write(main())
 file.close()
